@@ -1,0 +1,94 @@
+<?php
+    //Turn on error reporting
+    ini_set('display_errors', 'On');
+    //Connects to the database
+    $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "ranuv-db",  "42icZE2zP0GYRD2z", "ranuv-db");
+    if($mysqli->connect_errno){
+        echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+	}
+    ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+    <div id = "header">
+        <title>Pyramid Reviews</title>
+        <h1>Pyramid Reviews</h1>
+        <p>Welcome to Pyramid Reviews! Browse our site to get the latest on multi-level marketing companies.
+        </p>
+        <h2>What is multi-level marketing?</h2>
+        <ul>
+        <li>Multi-level marketing (MLM) is a marketing strategy in which the sales force is compensated for sales they personally generate as well as sales from other salespeople they recruit.</li> <br>
+        <li>Multi-level marketing plans have also been classified as pyramid schemes due to the nature of commission earned by their salespeople.
+        </ul>
+        <h2>Search Tool</h2>
+        <p>Use the drop box below to find information on a company or use the form below and submit a company not yet in our database!
+        </p>
+    </div><!--end header-->
+
+    <div id = "dropdown">
+        <form method = "POST" action = "findcompany.php">
+            <select name = "company">
+                <?php
+                    if(!($stmt = $mysqli->prepare("SELECT cid, name FROM MLMcompany"))){
+                        echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                    }
+                    if(!$stmt->execute()){
+                        echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+                    if(!$stmt->bind_result($id, $pname)){
+                        echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+                    while($stmt->fetch()){
+        
+                        echo '<option value=" '. $id . ' "> ' . $pname . '</option>\n';
+                    }
+                    $stmt->close();
+                    ?>
+            </select>
+            <p><input type="submit" value="Search" /></p>
+        </form>
+    </div><!--end dropdown-->
+
+    <div id = "newCompany">
+        <form method = "POST" action = "addCompany.php">
+            <fieldset>
+                <legend>Company Information</legend>
+                    <p>Name:<br> <input type="text" name="name" required = "required"/></p>
+                    <p>Founded (year):<br> <input type="text" name="founded"/></p>
+                    <p>Number of Employees:<br> <input type="text" name="size" /></p>
+                    <p>Revenue:<br> <input type="text" name="revenue" /></p>
+                    <p>Website:<br>  <input type="text" name="website" /></p>
+
+                    <p>Product:<br>
+                        <?php
+                            if(!($stmt = $mysqli->prepare("SELECT pid, name FROM MLMproduct"))){
+                                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                            }
+                            if(!$stmt->execute()){
+                                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                            }
+                            if(!$stmt->bind_result($id, $pname)){
+                                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                            }
+                            while($stmt->fetch()){
+                                echo '<input type = "checkbox" name = "product[]" value=" '. $id . ' "/> ' . $pname;
+                            }
+                            $stmt->close();
+                        ?>
+                    </p>
+            </fieldset>
+            <fieldset>
+                <legend>Company Address</legend>
+                    <p>Street Address:<br>  <input type="text" name="address" /></p>
+                    <p>City:<br>  <input type="text" name="city" required = "required"/></p>
+                    <p>State:<br>  <input type="text" name="state" required = "required"/></p>
+                    <p>Country:<br>  <input type="text" name="country" /></p>
+            </fieldset>
+            <p><input type="submit" value="Submit Form"/></p>
+        </form>
+    </div><!-- end newCompany>
+
+
+</body>
+</html>
