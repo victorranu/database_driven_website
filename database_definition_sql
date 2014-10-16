@@ -1,0 +1,49 @@
+
+DROP TABLE IF EXISTS `MLMcompanyProduct`;
+DROP TABLE IF EXISTS `MLMproduct`;
+DROP TABLE IF EXISTS `MLMreview`;
+DROP TABLE IF EXISTS `MLMaddress`;
+DROP TABLE IF EXISTS `MLMcompany`;
+
+CREATE TABLE MLMcompany (
+  cid INT unsigned AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
+  founded varchar (255),
+  size INT unsigned,
+  revenue BIGINT unsigned,
+  website varchar(255) NOT NULL,
+  PRIMARY KEY (cid)
+ ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE MLMreview (
+    rid INT unsigned AUTO_INCREMENT,
+    company_id INT unsigned,
+    numOfStars INT unsigned,
+    review LONGTEXT,
+    CONSTRAINT fk_MLMreview__MLMcompany FOREIGN KEY (company_id) REFERENCES MLMcompany (cid) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (rid)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE MLMaddress (
+    aid INT unsigned AUTO_INCREMENT,
+    company_id INT unsigned,
+    address VARCHAR(50) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_MLMaddress_MLMcompany FOREIGN KEY (company_id) REFERENCES MLMcompany (cid) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (aid)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE MLMproduct (
+    pid INT unsigned AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    PRIMARY KEY (pid)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+CREATE TABLE MLMcompanyProduct (
+    company_id INT unsigned,
+    product_id INT unsigned,
+    CONSTRAINT fk_MLMcompanyProduct_MLMcompany FOREIGN KEY (company_id) REFERENCES MLMcompany (cid) ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT fk_MLMcompanyProduct_MLMproduct FOREIGN KEY (product_id) REFERENCES MLMproduct (pid) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
