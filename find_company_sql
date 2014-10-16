@@ -1,0 +1,165 @@
+<?php
+    //Turn on error reporting
+    ini_set('display_errors', 'On');
+    //Connects to the database
+    $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "ranuv-db",  "42icZE2zP0GYRD2z", "ranuv-db");
+    if($mysqli->connect_errno){
+        echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+	}
+    ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<body>
+
+    <div id = "companyDisplay">
+
+        <?php
+            if(!($stmt = $mysqli->prepare("SELECT c.name, c.founded, c.size, c.revenue, c.website, a.address, a.city, a.state, a.country FROM MLMcompany c INNER JOIN MLMaddress a ON a.company_id = c.cid WHERE c.cid = ?"))){
+                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+    
+            if(!($stmt->bind_param("i",$_POST['company']))){
+                echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+    
+            if(!$stmt->execute()){
+                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            if(!$stmt->bind_result($cname, $founded, $size, $revenue, $website, $address, $city, $state, $country)){
+                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            while($stmt->fetch()){
+                echo "<h1> " . $cname . "</h1>";
+                if($founded != 0){
+                    echo "<p><b>Founded:</b> " . $founded . "</p>";
+                }else{
+                    echo "<p><b>Founded:</b> Not Specified</p>";
+                }
+                if($size != 0){
+                echo "<p><b>Number of Employees: </b>" . $size . "</p>";
+                }else{
+                echo "<p><b>Number of Employees: </b>Not Specified</p>";
+                }
+                if($founded != 0){
+                    echo "<p><b>Revenue: </b>" . $revenue . "</p>";
+                }else{
+                    echo "<p><b>Revenue: </b> Not Specified </p>";
+                }
+                if($founded != 0){
+                    echo "<p><b>Website:</b> <a href=\"http://" . $website . "\" target = \"blank\"> " . $website . " </a> </p>";
+                }else{
+                    echo "<p><b>Website:</b> Not Specified </p>";
+                }
+                if($address == NULL && $city == NULL && $state == NULL && $country == NULL){
+                    echo "<p><b>Address:</b>Not Specified </p>";
+                }else{
+                    echo "<p><b>Address:</b><br> " . $address . "<br>" . $city .", " . $state . " " . $country ."</p>";
+                }
+
+                
+            }
+            $stmt->close();
+            ?>
+
+        <?php
+            if(!($stmt = $mysqli->prepare("SELECT p.name FROM MLMproduct p INNER JOIN MLMcompanyProduct cp ON cp.product_id = p.pid INNER JOIN MLMcompany c ON c.cid = cp.company_id WHERE c.cid = ?"))){
+                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+    
+            if(!($stmt->bind_param("i",$_POST['company']))){
+                echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+    
+            if(!$stmt->execute()){
+                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            if(!$stmt->bind_result($pname)){
+                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            echo "<p><b>Product: </b><br>";
+            while($stmt->fetch()){
+                echo  $pname . "<br>";
+            }
+            echo "</p>";
+            $stmt->close();
+            ?>
+    </div><!--end companyDisplay-->
+
+    <div id = "reviews">
+        <?php
+            if(!($stmt = $mysqli->prepare("SELECT r.review, r.numOfStars FROM MLMreview r INNER JOIN MLMcompany c ON c.cid = r.company_id WHERE c.cid = ?"))){
+                echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+            
+            if(!($stmt->bind_param("i",$_POST['company']))){
+                echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+            }
+    
+            if(!$stmt->execute()){
+                echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            if(!$stmt->bind_result($review, $stars)){
+                echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+            }
+            echo "<h2> Reviews </h2>";
+            
+            $i = 1;
+            while($stmt->fetch() != NULL){
+                echo "<p><b>Star Rating: </b> " . $stars . "</p>";
+                echo "<p><b>Review " . $i . ": </b> " . $review . "</p>";
+                $i++;
+            }
+            if($stmt->fetch() == NULL){
+                echo "<br><h4>Leave a review below!<h4>";
+            }
+            $stmt->close();
+            ?>
+    </div><!--end reviews-->
+
+    <div id = "addReview">
+
+        <form method = "POST" action = "addReview.php">
+            <fieldset>
+                <legend>Add Review</legend>
+                <p>
+                <b>Stars</b>
+                <select name = "stars">
+                <option value = "1">1</option>
+                <option value = "2">2</option>
+                <option value = "3">3</option>
+                <option value = "4">4</option>
+                <option value = "5">5</option>
+                </select>
+                <input type="hidden" id="cname" name="cname" value="<?php
+                    if(!($stmt = $mysqli->prepare("SELECT c.name FROM MLMcompany c WHERE c.cid = ?"))){
+                            echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+                    }
+                    if(!($stmt->bind_param("i",$_POST['company']))){
+                            echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+                    }
+                    if(!$stmt->execute()){
+                            echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+                    if(!$stmt->bind_result($cname)){
+                            echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+                    }
+                    while($stmt->fetch()){
+                            echo $cname;
+                    }
+                    $stmt->close();
+                    ?>">
+                </p>
+                <p>
+                <b>Write Review</b>
+                </p>
+                <textarea name = "review" cols = "60" rows = "9">EXAMPLE: I have been working at Company XYZ part-time for more than 3 years.You are your own boss. Self-discipline is key if you want to succeed in your goals. The only thing you can control is how much work you are willing to do. The corporate staff truly cares about the sales force and make us a priority...</textarea>
+                <p><input type="submit" value="Post" /></p>
+            </fieldset>
+        </form>
+    </div><!-- end addReview>
+
+
+</body>
+</html>
