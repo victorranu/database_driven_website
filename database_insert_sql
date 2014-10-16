@@ -1,0 +1,105 @@
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Usana Health Sciences', '1992', '750', '649000000', 'www.usana.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Cutco', '1949', '701', '200000000', 'www.cutco.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Vemma', '2004', '00', '221000000','www.vemma.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Amway', '1959', '13000', '11800000000','www.amway.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Herbalife', '1980', '7400', '4072000000','www.herbalife.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Nu Skin', '1984', '3733', '2170000000', 'www.nuskin.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('ViSalus', '2005', '275', '624000000', 'www.visalus.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Mary Kay', '1963', '3000000', '3100000000', 'www.marykay.com');
+
+INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES ('Scentsy', '2003', '200000', '560000000', 'www.scentsy.com');
+
+
+
+
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Cutco'), '1116 E State St', 'Olean', 'New York', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Usana Health Sciences'), '3838 Parkway Blvd', 'Salt Lake City', 'Utah', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Vemma'), '1621 West Rio Salado Parkway', 'Tempe', 'Arizona', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Amway'), '7575 Fulton St', 'Ada', 'Michigan', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Herbalife'), 'LA Live', 'Los Angeles', 'California', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Nu Skin'), '275 E 1325 S', 'Provo', 'Utah', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'ViSalus'), '6300 Wilshire Blvd #1440', 'Los Angeles', 'California', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Mary Kay'), '16251 Dallas Pkwy', 'Dallas', 'Texas', 'USA');
+
+INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Scentsy'), '2701 E Pine Ave', 'Meridian', 'Idaho', 'USA');
+
+
+
+
+
+INSERT INTO MLMproduct (name) VALUES ('Health/Nutrition'), ('Household/Decorative'), ('Cookware/Kitchen'), ('Personal Care'), ('Multiple Products'), ('Nutritional Supplements'), ('Dietary Supplements'), ('Cosmetics'), ('Candles'), ('Wine/Home Decor'), ('Beauty/Skincare/Spa'), ('Telecommunication'), ('Jewelry/Gems'), ('Energy/Electricity/Gas'), ('Arts/Hobbies'), ('Education/Books/Games'), ('Fashion');
+
+
+
+
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Usana Health Sciences'),(SELECT pid FROM MLMproduct WHERE name = 'Nutritional supplements'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Usana Health Sciences'),(SELECT pid FROM MLMproduct WHERE name = 'Health/Nutrition'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Cutco'),(SELECT pid FROM MLMproduct WHERE name = 'Household/Decorative'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Cutco'),(SELECT pid FROM MLMproduct WHERE name = 'Cookware/kitchen'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Vemma'),(SELECT pid FROM MLMproduct WHERE name = 'Dietary Supplements'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Vemma'),(SELECT pid FROM MLMproduct WHERE name = 'Health/nutrition'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Herbalife'),(SELECT pid FROM MLMproduct WHERE name = 'Health/nutrition'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Nu Skin'),(SELECT pid FROM MLMproduct WHERE name = 'Health/Nutrition'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Nu Skin'),(SELECT pid FROM MLMproduct WHERE name = 'Personal Care'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Visalus'),(SELECT pid FROM MLMproduct WHERE name = 'Dietary Supplements'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Visalus'),(SELECT pid FROM MLMproduct WHERE name = 'Health/Nutrition'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Mary Kay'),(SELECT pid FROM MLMproduct WHERE name = 'Cosmetics'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Mary Kay'),(SELECT pid FROM MLMproduct WHERE name = 'Personal Care'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Scentsy'),(SELECT pid FROM MLMproduct WHERE name = 'Candles'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Scentsy'),(SELECT pid FROM MLMproduct WHERE name = 'Household/Decorative'));
+
+INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = 'Amway'),(SELECT pid FROM MLMproduct WHERE name = 'Multiple products'));
+
+
+
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Mary Kay'),  '5',  'I love everything about Mary Kay all the product is amazing!!');
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Mary Kay'),  '1',  "I don't get it, I get approached by these girls everywhere. Let me just shop in peace. I don't want to join your cult and sell your crap. Come up with a better business plan, hunting me down in walmart is not gonna work. Sorry.");
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Herbalife'),  '5',  "Very great Company, effective products for weight control and a good chance for economic opportunity!");
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Herbalife'),  '5',  "I love Herbalife. Great company");
+
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Cutco'),  '2',  "A signature set sold for $1919 does not get you the guaranteed minimum of 10% ($191.90) commission promised by the company. Instead the company came up with this CPO and Point values that are deducted from the original sale price leaving you with $170.40 of commission");
+
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Cutco'),  '1',  "I have family and friends who are working or have worked for Cutco/Vector Marketing in the past. They immediately warn me, NEVER WORK FOR THEM. My best friend had received a job offer and gladly took it, being a 17 year old, still in high-school, in need of money. They willingly LIED about her age, just so she may work there. They did not alert her as to what her job was, until she accepted it and signed a contract. The job is going into people's houses, be it friends, family, or if the person is desperate, strangers. You are not paid a single cent until you sell. You're only paid based off how much you sell. Cutco's working ethic is below standard, and borderline illegal.");
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Scentsy'),  '3',  "Its Direct Sales, its not an easy business, you have to be willing to WORK");
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Scentsy'),  '2',  "I worked at Scentsy full-time for less than a year, pay is low for responsibilities, yearly wage increase is nearly insulting");
+
+
+INSERT INTO  `ranuv-db`.`MLMreview` (`rid` ,`company_id` ,`numOfStars` ,`review`) VALUES (NULL ,  (SELECT cid FROM MLMcompany WHERE name = 'Scentsy'),  '5',  "Solid and entrepreneurial, even though the product is a bit silly");
