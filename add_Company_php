@@ -1,0 +1,59 @@
+<?php
+    //Turn on error reporting
+    ini_set('display_errors', 'On');
+    //Connects to the database
+    $mysqli = new mysqli("oniddb.cws.oregonstate.edu", "ranuv-db",  "42icZE2zP0GYRD2z", "ranuv-db");
+    if($mysqli->connect_errno){
+        echo "Connection error " . $mysqli->connect_errno . " " . $mysqli->connect_error;
+	}
+    
+	//INSERT INTO MLMcompany
+    if(!($stmt = $mysqli->prepare("INSERT INTO MLMcompany (name, founded, size, revenue, website) VALUES (?, ?, ?, ?, ?)"))){
+        echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!($stmt->bind_param("siiis", $_POST['name'], $_POST['founded'], $_POST['size'], $_POST['revenue'], $_POST['website']))){
+        echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!$stmt->execute()){
+        echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+    } else {
+        echo "Added " . $_POST['name'] . " to the database.\n<br>";
+    }
+    ?>
+
+<?php
+    //INSERT INTO MLMcompanyProduct
+    $checked_arr = $_POST['product'];
+    $count = count($checked_arr);
+    $x = 0;
+    
+    while($x <= $count){
+    if(!($stmt = $mysqli->prepare("INSERT INTO MLMcompanyProduct (company_id, product_id) VALUES ((SELECT cid FROM MLMcompany WHERE name = ?),?)"))){
+        echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!($stmt->bind_param("si", $_POST['name'], $checked_arr[$x]))){
+        echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!$stmt->execute()){
+        echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+    } else {
+        echo "Added product" . $checked_arr[$x] . " to the company corresponding to " . $_POST['name'] . "\n<br>";
+    }
+        $x = $x+1;
+    }
+    ?>
+
+<?php
+    //INSERT INTO MLMaddress
+    if(!($stmt = $mysqli->prepare("INSERT INTO MLMaddress (company_id, address, city, state, country) VALUES ((SELECT cid FROM MLMcompany WHERE name = ?), ?, ?, ?, ?)"))){
+        echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!($stmt->bind_param("sssss", $_POST['name'], $_POST['address'], $_POST['city'], $_POST['state'], $_POST['country']))){
+        echo "Bind failed: "  . $stmt->errno . " " . $stmt->error;
+    }
+    if(!$stmt->execute()){
+        echo "Execute failed: "  . $stmt->errno . " " . $stmt->error;
+    } else {
+        echo "Added address to the company corresponding to " . $_POST['name'];
+    }
+    ?>
